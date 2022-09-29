@@ -40,7 +40,7 @@ import java.nio.file.Paths;
 @RequestMapping("/pdf/demo1")
 public class Demo1Controller {
 
-    @ApiOperation("生成PDF文件")
+    @ApiOperation("生成PDF文件--一段以Hello Word")
     @PostMapping("/create")
     public Result<Boolean> create(@ApiParam(name = "filename")
             @Valid @NotBlank(message = "文件生成地址不能为空")

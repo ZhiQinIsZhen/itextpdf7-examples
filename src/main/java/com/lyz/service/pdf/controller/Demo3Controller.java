@@ -22,7 +22,7 @@ import java.io.IOException;
  * @version 1.0.0
  * @date 2022/9/29 11:22
  */
-@Api(tags = "demo1")
+@Api(tags = "demo3")
 @ApiResponses(value = {
         @ApiResponse(code = 0, message = "成功"),
         @ApiResponse(code = 1, message = "失败")
