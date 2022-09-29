@@ -1,7 +1,13 @@
 package com.lyz.service.pdf.controller;
 
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.colors.DeviceRgb;
+import com.itextpdf.kernel.events.PdfDocumentEvent;
+import com.itextpdf.kernel.geom.Rectangle;
+import com.itextpdf.kernel.pdf.*;
+import com.itextpdf.kernel.pdf.annot.PdfAnnotation;
+import com.itextpdf.kernel.pdf.annot.PdfLineAnnotation;
+import com.lyz.service.pdf.handler.PageSizeEventHandler;
+import com.lyz.service.pdf.handler.WaterMarkEventHandler;
 import com.lyz.service.pdf.result.Result;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
@@ -33,12 +39,28 @@ import java.io.IOException;
 @RequestMapping("/pdf/demo4")
 public class Demo4Controller {
 
-    @ApiOperation("生成PDF文件")
+    @ApiOperation("生成PDF文件--添加注解")
     @PostMapping("/create")
     public Result<Boolean> create(@ApiParam(name = "filename")
             @Valid @NotBlank(message = "文件生成地址不能为空")
             @RequestParam(value = "filename", defaultValue = "") String filename) throws IOException {
         PdfDocument pdf = new PdfDocument(new PdfWriter(filename));
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new PageSizeEventHandler());
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new WaterMarkEventHandler("杭州至秦科技有限公司"));
+        PdfPage page = pdf.addNewPage();
+        PdfArray lineEndings = new PdfArray();
+        lineEndings.add(new PdfName("Diamond"));
+        lineEndings.add(new PdfName("Diamond"));
+        PdfAnnotation annotation = new PdfLineAnnotation(
+                new Rectangle(0, 0),
+                new float[]{20, 790, page.getPageSize().getWidth() - 20, 790})
+                .setLineEndingStyles((lineEndings))
+                .setContentsAsCaption(true)
+                .setTitle(new PdfString("iText"))
+                .setContents("The example of line annotation")
+                .setColor(new DeviceRgb(0,0,255));
+        page.addAnnotation(annotation);
+        pdf.close();
         return Result.success(Boolean.TRUE);
     }
 }

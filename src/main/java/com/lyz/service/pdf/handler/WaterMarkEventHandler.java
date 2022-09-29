@@ -46,7 +46,6 @@ public class WaterMarkEventHandler implements IEventHandler {
         JLabel label = new JLabel();
         label.setText(content);
         FontMetrics metrics = label.getFontMetrics(label.getFont());
-        int textHeight = metrics.getHeight();
         int textWidth = metrics.stringWidth(label.getText());
         //add font
         PdfFont font = PdfFontUtil.createFont(PdfFontUtil.FontEnum.SOURCE_OLD_STYLE);
