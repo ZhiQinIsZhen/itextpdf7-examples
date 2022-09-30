@@ -86,6 +86,21 @@
             <artifactId>pdfa</artifactId>
             <version>${pdf.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>font-asian</artifactId>
+            <version>${pdf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>svg</artifactId>
+            <version>${pdf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>commons</artifactId>
+            <version>${pdf.version}</version>
+        </dependency>
         <!--+++++++++++++++++++end pdf+++++++++++++++++++++++-->
         <dependency>
             <groupId>junit</groupId>
