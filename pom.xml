@@ -101,6 +101,11 @@
             <artifactId>commons</artifactId>
             <version>${pdf.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>html2pdf</artifactId>
+            <version>4.0.3</version>
+        </dependency>
         <!--+++++++++++++++++++end pdf+++++++++++++++++++++++-->
         <dependency>
             <groupId>junit</groupId>

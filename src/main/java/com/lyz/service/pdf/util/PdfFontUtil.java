@@ -7,6 +7,7 @@ import com.itextpdf.kernel.font.PdfFontFactory;
 import com.lyz.service.pdf.exception.PdfException;
 import com.lyz.service.pdf.exception.PdfExceptionCodeEnum;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,8 +26,9 @@ import java.util.Objects;
 public class PdfFontUtil {
 
     static {
-        FontProgramFactory.registerFont("C:\\code\\liyz\\itextpdf7-examples\\src\\main\\resources\\templates\\font\\WeiRuanYaHei-1.ttf", FontEnum.WRYH.font);
-        FontProgramFactory.registerFont("C:\\code\\liyz\\itextpdf7-examples\\src\\main\\resources\\templates\\font\\SourceHanSansOldStyle-Regular.ttf", FontEnum.SOURCE_OLD_STYLE.font);
+        FontProgramFactory.registerFont(FontEnum.WRYH.path, FontEnum.WRYH.font);
+        FontProgramFactory.registerFont(FontEnum.SOURCE_OLD_STYLE.path, FontEnum.SOURCE_OLD_STYLE.font);
+        FontProgramFactory.registerFont(FontEnum.SONG_STYLE.path, FontEnum.SONG_STYLE.font);
     }
 
     /**
@@ -51,11 +53,15 @@ public class PdfFontUtil {
 
     @AllArgsConstructor
     public enum FontEnum {
-        WRYH("WeiRuanYaHei", "微软雅黑"),
-        SOURCE_OLD_STYLE("SourceHanSansOldStyle-Regular", "思源黑体旧字形"),
+        WRYH("WeiRuanYaHei", "微软雅黑", "C:\\code\\liyz\\itextpdf7-examples\\src\\main\\resources\\templates\\font\\WeiRuanYaHei-1.ttf"),
+        SOURCE_OLD_STYLE("SourceHanSansOldStyle-Regular", "思源黑体旧字形", "C:\\code\\liyz\\itextpdf7-examples\\src\\main\\resources\\templates\\font\\SourceHanSansOldStyle-Regular.ttf"),
+        SONG_STYLE("SongStyle", "简体-宋体", "C:\\code\\liyz\\itextpdf7-examples\\src\\main\\resources\\templates\\font\\simsun.ttf"),
         ;
-
+        @Getter
         private String font;
+        @Getter
         private String desc;
+        @Getter
+        private String path;
     }
 }

@@ -74,7 +74,7 @@ public class Demo5Controller {
         pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new PageSizeEventHandler());
         pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new WaterMarkEventHandler("杭州至秦科技有限公司"));
         Document document = new Document(pdf);
-        document.add(new Paragraph("目录").setFont(PdfFontUtil.createFont(PdfFontUtil.FontEnum.WRYH)).setFontSize(25).setTextAlignment(TextAlignment.CENTER));
+        document.add(new Paragraph("目录").setFont(PdfFontUtil.createFont(PdfFontUtil.FontEnum.SONG_STYLE)).setFontSize(25).setTextAlignment(TextAlignment.CENTER));
         for (Map.Entry<String, Integer> entry : TheRevenantNominations.entrySet()) {
             PdfPage pdfPage = pdf.addNewPage();
             //Add destination
