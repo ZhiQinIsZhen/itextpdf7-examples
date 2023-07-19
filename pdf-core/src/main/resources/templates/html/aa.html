@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link href="/templates/css/cover.css" rel="stylesheet" type="text/css"/>
+    <title>bond</title>
+</head>
+<body>
+    <!-- 封面 -->
+    <div th:replace="~{html/cover :: cover(imageBG='face-bg')}"/>
+	<div class="cover-company"
+         th:text="${name}">
+    </div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>cover</title>
+    <link href="/templates/css/cover.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!--封面-->
+<div class="cover" th:fragment="cover(imageBG)">
+    <img src="/templates/image/face-bg.jpg" th:src="|/templates/image/${imageBG}.jpg|"/>
+</div>
+</body>
+</html>
