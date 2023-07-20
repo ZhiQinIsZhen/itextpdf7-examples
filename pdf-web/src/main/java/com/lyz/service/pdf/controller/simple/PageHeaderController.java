@@ -58,9 +58,13 @@ public class PageHeaderController {
         writerProperties.setFullCompressionMode(true);
         PdfDocument pdf = new PdfDocument(new PdfWriter(absolutePath, writerProperties));
         pdf.setDefaultPageSize(PageSize.A3);
-        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new WaterMarkEventHandler(WaterMarkEvent.builder().waterMark("杭州至秦科技有限公司").build()));
-
-        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new PageSizeEventHandler(PageSizeEvent.builder().prefix("第").suffix("页").build()));
+        WaterMarkEvent waterMarkEvent = new WaterMarkEvent();
+        waterMarkEvent.setWaterMark("杭州至秦科技有限公司");
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new WaterMarkEventHandler(waterMarkEvent));
+        PageSizeEvent pageSizeEvent = new PageSizeEvent();
+        pageSizeEvent.setPrefix("第");
+        pageSizeEvent.setSuffix("页");
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new PageSizeEventHandler(pageSizeEvent));
 
         PageHeaderEvent event = new PageHeaderEvent();
         event.setStartPageNumber(1);

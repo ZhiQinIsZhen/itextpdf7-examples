@@ -45,8 +45,10 @@ public class HtmlController {
             @Valid @NotBlank(message = "文件名不能为空")
             @RequestParam(value = "filename", defaultValue = "") String filename) {
         MyContext context = new MyContext();
-        context.setPsEvent(PageSizeEvent.builder().build());
-        context.setWmEvent(WaterMarkEvent.builder().waterMark("杭州至秦科技有限公司").build());
+        context.setPsEvent(new PageSizeEvent());
+        WaterMarkEvent waterMarkEvent = new WaterMarkEvent();
+        waterMarkEvent.setWaterMark("杭州至秦科技有限公司");
+        context.setWmEvent(waterMarkEvent);
         context.setVariable("name", UUID.randomUUID().toString());
         String path = html2PdfService.process(filename, "html/aa", context);
         return Result.success(path);

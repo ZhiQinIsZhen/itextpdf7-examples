@@ -54,8 +54,10 @@ public class FieldController {
                                    @Valid @NotBlank(message = "文件生成地址不能为空")
                                    @RequestParam(value = "filename", defaultValue = "") String filename) throws IOException {
         PdfDocument pdf = new PdfDocument(new PdfWriter(filename));
-        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new PageSizeEventHandler(PageSizeEvent.builder().build()));
-        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new WaterMarkEventHandler(WaterMarkEvent.builder().waterMark("杭州至秦科技有限公司").build()));
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new PageSizeEventHandler(new PageSizeEvent()));
+        WaterMarkEvent waterMarkEvent = new WaterMarkEvent();
+        waterMarkEvent.setWaterMark("杭州至秦科技有限公司");
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new WaterMarkEventHandler(waterMarkEvent));
         Document document = new Document(pdf);
         Paragraph title = new Paragraph("Application for employment")
                 .setTextAlignment(TextAlignment.CENTER)

@@ -1,6 +1,7 @@
 package com.lyz.service.pdf.core.event;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -13,9 +14,6 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class WaterMarkEvent implements Serializable {
     private static final long serialVersionUID = -5492519034322034397L;
 

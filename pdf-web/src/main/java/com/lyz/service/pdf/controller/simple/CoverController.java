@@ -55,8 +55,10 @@ public class CoverController {
         writerProperties.setFullCompressionMode(true);
         PdfDocument pdf = new PdfDocument(new PdfWriter(absolutePath, writerProperties));
         pdf.setDefaultPageSize(PageSize.A3);
-        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new PageSizeEventHandler(PageSizeEvent.builder().build()));
-        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new WaterMarkEventHandler(WaterMarkEvent.builder().waterMark("杭州至秦科技有限公司").build()));
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new PageSizeEventHandler(new PageSizeEvent()));
+        WaterMarkEvent waterMarkEvent = new WaterMarkEvent();
+        waterMarkEvent.setWaterMark("杭州至秦科技有限公司");
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new WaterMarkEventHandler(waterMarkEvent));
         pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new CoverEventHandler());
         Document document = new Document(pdf, pdf.getDefaultPageSize(), false);
         document.close();

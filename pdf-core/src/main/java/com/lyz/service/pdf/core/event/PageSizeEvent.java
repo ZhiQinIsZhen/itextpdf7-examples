@@ -1,6 +1,7 @@
 package com.lyz.service.pdf.core.event;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -14,9 +15,6 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class PageSizeEvent implements Serializable {
     private static final long serialVersionUID = 7586975966998958929L;
 
@@ -38,7 +36,7 @@ public class PageSizeEvent implements Serializable {
     /**
      * 字体大小
      */
-    private float fontSize = 9f;
+    private float fontSize = 10f;
 
     /**
      * 透明度

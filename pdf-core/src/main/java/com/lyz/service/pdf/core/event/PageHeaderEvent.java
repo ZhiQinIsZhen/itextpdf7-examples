@@ -1,6 +1,7 @@
 package com.lyz.service.pdf.core.event;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,9 +15,6 @@ import java.util.Date;
  */
 @Getter
 @Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class PageHeaderEvent implements Serializable {
     private static final long serialVersionUID = 3173457759211493035L;
 
