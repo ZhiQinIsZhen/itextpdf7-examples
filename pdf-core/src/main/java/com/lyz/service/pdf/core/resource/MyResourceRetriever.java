@@ -1,6 +1,8 @@
-package com.lyz.service.pdf.core;
+package com.lyz.service.pdf.core.resource;
 
 import com.itextpdf.styledxmlparser.resolver.resource.DefaultResourceRetriever;
+import com.lyz.service.pdf.exception.PdfExceptionCodeEnum;
+import com.lyz.service.pdf.exception.PdfServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -53,5 +55,17 @@ public class MyResourceRetriever extends DefaultResourceRetriever {
     private InputStream default404InputStream() throws IOException {
         //返回404图片
         return new ClassPathResource("templates/image/404.png").getInputStream();
+    }
+
+    public static String getUrl(String url) {
+        if (url.startsWith("http://") || url.startsWith("https://")) {
+            return url;
+        }
+        try {
+            return new ClassPathResource(url).getURL().getPath();
+        } catch (IOException e) {
+            log.error("获取资源文件失败", e);
+            throw new PdfServiceException(PdfExceptionCodeEnum.RESOURCE_FAIL);
+        }
     }
 }

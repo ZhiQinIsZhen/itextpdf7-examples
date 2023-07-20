@@ -11,6 +11,8 @@ import com.itextpdf.kernel.pdf.annot.PdfAnnotation;
 import com.itextpdf.kernel.pdf.annot.PdfTextAnnotation;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
+import com.lyz.service.pdf.core.event.PageSizeEvent;
+import com.lyz.service.pdf.core.event.WaterMarkEvent;
 import com.lyz.service.pdf.core.handler.PageSizeEventHandler;
 import com.lyz.service.pdf.core.handler.WaterMarkEventHandler;
 import com.lyz.service.pdf.exception.PdfExceptionCodeEnum;
@@ -79,7 +81,7 @@ public class TextController {
                                   @Valid @NotBlank(message = "文件生成地址不能为空")
                                   @RequestParam(value = "filename", defaultValue = "") String filename) throws IOException {
         PdfDocument pdf = new PdfDocument(new PdfWriter(filename));
-        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new PageSizeEventHandler());
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new PageSizeEventHandler(PageSizeEvent.builder().build()));
         Document document = new Document(pdf);
         //add font
         PdfFont font = PdfFontUtil.createFont(PdfFontUtil.FontEnum.WeiRuanYaHei_Regular);
@@ -97,7 +99,7 @@ public class TextController {
                                   @Valid @NotBlank(message = "文件生成地址不能为空")
                                   @RequestParam(value = "filename", defaultValue = "") String filename) throws IOException {
         PdfDocument pdf = new PdfDocument(new PdfWriter(filename));
-        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new WaterMarkEventHandler("杭州至秦科技有限公司"));
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new WaterMarkEventHandler(WaterMarkEvent.builder().waterMark("杭州至秦科技有限公司").build()));
         Document document = new Document(pdf);
         //add font
         PdfFont font = PdfFontUtil.createFont(PdfFontUtil.FontEnum.WeiRuanYaHei_Regular);
@@ -115,8 +117,8 @@ public class TextController {
                                    @Valid @NotBlank(message = "文件生成地址不能为空")
                                    @RequestParam(value = "filename", defaultValue = "") String filename) throws IOException {
         PdfDocument pdf = new PdfDocument(new PdfWriter(filename));
-        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new PageSizeEventHandler());
-        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new WaterMarkEventHandler("杭州至秦科技有限公司"));
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new PageSizeEventHandler(PageSizeEvent.builder().build()));
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new WaterMarkEventHandler(WaterMarkEvent.builder().waterMark("杭州至秦科技有限公司").build()));
         Document document = new Document(pdf);
         document.add(new Paragraph("一个文本注解例子").setFont(PdfFontUtil.createFont(PdfFontUtil.FontEnum.WeiRuanYaHei_Regular)));
 

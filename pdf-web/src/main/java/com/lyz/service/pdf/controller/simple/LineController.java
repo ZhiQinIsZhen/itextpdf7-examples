@@ -6,6 +6,8 @@ import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.kernel.pdf.annot.PdfAnnotation;
 import com.itextpdf.kernel.pdf.annot.PdfLineAnnotation;
+import com.lyz.service.pdf.core.event.PageSizeEvent;
+import com.lyz.service.pdf.core.event.WaterMarkEvent;
 import com.lyz.service.pdf.core.handler.PageSizeEventHandler;
 import com.lyz.service.pdf.core.handler.WaterMarkEventHandler;
 import com.lyz.service.pdf.result.Result;
@@ -45,8 +47,8 @@ public class LineController {
             @Valid @NotBlank(message = "文件生成地址不能为空")
             @RequestParam(value = "filename", defaultValue = "") String filename) throws IOException {
         PdfDocument pdf = new PdfDocument(new PdfWriter(filename));
-        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new PageSizeEventHandler());
-        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new WaterMarkEventHandler("杭州至秦科技有限公司"));
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new PageSizeEventHandler(PageSizeEvent.builder().build()));
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new WaterMarkEventHandler(WaterMarkEvent.builder().waterMark("杭州至秦科技有限公司").build()));
         PdfPage page = pdf.addNewPage();
         PdfArray lineEndings = new PdfArray();
         lineEndings.add(new PdfName("Diamond"));

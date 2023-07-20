@@ -21,7 +21,7 @@ import org.springframework.core.io.ClassPathResource;
 import java.io.IOException;
 
 /**
- * 注释:
+ * 注释:封面事件
  *
  * @author liyangzhen
  * @version 1.0.0
@@ -33,13 +33,13 @@ public class CoverEventHandler implements IEventHandler {
     @Override
     public void handleEvent(Event event) {
         PdfDocumentEvent documentEvent = (PdfDocumentEvent) event;
-        PdfDocument document = documentEvent.getDocument();;
+        PdfDocument document = documentEvent.getDocument();
         if (document.getNumberOfPages() != 1) {
             return;
         }
         PdfPage page = documentEvent.getPage();
         PdfCanvas pdfCanvas = new PdfCanvas(page.newContentStreamBefore(), page.getResources(), document);
-        pdfCanvas.saveState().rectangle(50,50,50,50).fill().restoreState();
+        pdfCanvas.saveState().rectangle(page.getArtBox().getX(), page.getArtBox().getY(), page.getArtBox().getWidth(), page.getArtBox().getHeight()).fill().restoreState();
         ImageData imageData = null;
         try {
             imageData = ImageDataFactory.create(new ClassPathResource("templates/image/face-bg.jpg").getURL());

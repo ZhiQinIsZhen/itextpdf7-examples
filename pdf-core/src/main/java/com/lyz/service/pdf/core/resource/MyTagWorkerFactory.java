@@ -1,4 +1,4 @@
-package com.lyz.service.pdf.core;
+package com.lyz.service.pdf.core.resource;
 
 import com.itextpdf.html2pdf.attach.ITagWorker;
 import com.itextpdf.html2pdf.attach.ProcessorContext;

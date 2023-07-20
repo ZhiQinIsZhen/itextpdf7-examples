@@ -1,4 +1,4 @@
-package com.lyz.service.pdf.core;
+package com.lyz.service.pdf.core.resource;
 
 import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.layout.LayoutContext;

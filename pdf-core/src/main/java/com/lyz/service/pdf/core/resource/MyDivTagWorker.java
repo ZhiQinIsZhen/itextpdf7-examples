@@ -1,4 +1,4 @@
-package com.lyz.service.pdf.core;
+package com.lyz.service.pdf.core.resource;
 
 import com.itextpdf.html2pdf.attach.ProcessorContext;
 import com.itextpdf.html2pdf.attach.impl.tags.DivTagWorker;
