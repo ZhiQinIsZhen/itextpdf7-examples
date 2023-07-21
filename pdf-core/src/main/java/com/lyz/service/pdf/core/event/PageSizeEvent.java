@@ -39,9 +39,9 @@ public class PageSizeEvent implements Serializable {
     private float fontSize = 10f;
 
     /**
-     * 透明度
+     * 底部
      */
-    private float opacity = 1f;
+    private float bottom = 0f;
 
     /**
      * 获取pageSize文本

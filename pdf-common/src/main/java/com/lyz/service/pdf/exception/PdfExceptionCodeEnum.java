@@ -16,7 +16,8 @@ public enum PdfExceptionCodeEnum implements IExceptionService{
     CREATE_PDF_FAIL("10003", "生成PDF文件失败"),
     CREATE_PDF_FONT_FAIL("10004", "生成PDF字体失败"),
     PAGE_HEADER_FAIL("10005", "页眉配置失败"),
-    RESOURCE_FAIL("10006", "资源文件获取失败"),
+    PAGE_FOOTER_FAIL("10006", "页脚配置失败"),
+    RESOURCE_FAIL("10007", "资源文件获取失败"),
     ;
 
     private final String code;

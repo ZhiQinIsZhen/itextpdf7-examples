@@ -12,6 +12,8 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.font.FontProvider;
 import com.lyz.service.pdf.constant.PdfServiceConstant;
 import com.lyz.service.pdf.core.context.MyContext;
+import com.lyz.service.pdf.core.context.PdfContext;
+import com.lyz.service.pdf.core.handler.PageFooterEventHandler;
 import com.lyz.service.pdf.core.handler.PageHeaderEventHandler;
 import com.lyz.service.pdf.core.handler.PageSizeEventHandler;
 import com.lyz.service.pdf.core.handler.WaterMarkEventHandler;
@@ -90,6 +92,8 @@ public class Html2PdfServiceImpl implements Html2PdfService, ApplicationContextA
         } catch (Exception e) {
             log.info("pdf file create error, fileName : {}", fileName, e);
             throw new PdfServiceException(PdfExceptionCodeEnum.CREATE_PDF_FAIL);
+        } finally {
+            PdfContext.remove();
         }
         log.info("生成pdf文件耗时: {}ms", System.currentTimeMillis() - startTime);
         return pdfAbsolutePath;
@@ -141,6 +145,8 @@ public class Html2PdfServiceImpl implements Html2PdfService, ApplicationContextA
     private void addEventHandler(PdfDocument pdfDocument, MyContext context) {
         //页眉事件
         pdfDocument.addEventHandler(PdfDocumentEvent.START_PAGE, new PageHeaderEventHandler(context.getPhEvent()));
+        //页脚事件
+        pdfDocument.addEventHandler(PdfDocumentEvent.START_PAGE, new PageFooterEventHandler(context.getPfEvent()));
         //页码事件
         pdfDocument.addEventHandler(PdfDocumentEvent.START_PAGE, new PageSizeEventHandler(context.getPsEvent()));
         //水印事件

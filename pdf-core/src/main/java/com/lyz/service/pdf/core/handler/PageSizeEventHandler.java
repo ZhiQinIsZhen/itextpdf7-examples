@@ -1,5 +1,6 @@
 package com.lyz.service.pdf.core.handler;
 
+import cn.hutool.core.math.MathUtil;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.events.Event;
 import com.itextpdf.kernel.events.IEventHandler;
@@ -8,12 +9,13 @@ import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfPage;
-import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
-import com.itextpdf.kernel.pdf.extgstate.PdfExtGState;
 import com.itextpdf.layout.Canvas;
+import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.VerticalAlignment;
+import com.lyz.service.pdf.core.context.PdfContext;
 import com.lyz.service.pdf.core.event.PageSizeEvent;
 import com.lyz.service.pdf.util.PdfFontUtil;
 
@@ -46,22 +48,25 @@ public class PageSizeEventHandler implements IEventHandler {
             return;
         }
         PdfPage page = documentEvent.getPage();
-        Rectangle rectangle = page.getPageSize();
+        Rectangle pageSize = page.getPageSize();
+        Canvas canvas = new Canvas(page, pageSize);
         //add font
         PdfFont font = PdfFontUtil.createFont(PdfFontUtil.FontEnum.PingFang_Medium);
         String pageText = pageSizeEvent.getPageSizeText(pageNumber);
         float width = font.getWidth(pageText, pageSizeEvent.getFontSize());
-        PdfCanvas pdfCanvas = new PdfCanvas(page.newContentStreamBefore(), page.getResources(), pdfDocument);
+        float bottom = PdfContext.getFooterDivHeight();
+        Div pageSizeDiv = new Div()
+                .setHeight(pageSizeEvent.getFontSize() + 20f)
+                .setPaddingBottom(0f)
+                .setFixedPosition(0, bottom, pageSize.getWidth());
         Paragraph paragraph = new Paragraph(pageText)
+                .setMargin(0)
+                .setMarginTop(2)
                 .setFont(font)
                 .setFontSize(pageSizeEvent.getFontSize())
+                .setTextAlignment(TextAlignment.CENTER)
                 .setFontColor(new DeviceRgb(90,90,90));
-        PdfExtGState gs = new PdfExtGState().setFillOpacity(pageSizeEvent.getOpacity());
-        pdfCanvas.saveState();
-        pdfCanvas.setExtGState(gs);
-        Canvas canvas = new Canvas(pdfCanvas, documentEvent.getDocument().getDefaultPageSize());
-        canvas.showTextAligned(paragraph, (rectangle.getWidth() - width) / 2, 25, documentEvent.getDocument().getNumberOfPages(), TextAlignment.CENTER, VerticalAlignment.MIDDLE, 0);
-        canvas.close();
-        pdfCanvas.restoreState();
+        pageSizeDiv.add(paragraph);
+        canvas.add(pageSizeDiv).close();
     }
 }

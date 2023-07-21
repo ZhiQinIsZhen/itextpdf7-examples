@@ -1,5 +1,6 @@
 package com.lyz.service.pdf.core.context;
 
+import com.lyz.service.pdf.core.event.PageFooterEvent;
 import com.lyz.service.pdf.core.event.PageHeaderEvent;
 import com.lyz.service.pdf.core.event.PageSizeEvent;
 import com.lyz.service.pdf.core.event.WaterMarkEvent;
@@ -43,6 +44,13 @@ public class MyContext extends AbstractContext {
     @Getter
     @Setter
     private PageHeaderEvent phEvent;
+
+    /**
+     * 页脚
+     */
+    @Getter
+    @Setter
+    private PageFooterEvent pfEvent;
 
     /**
      * 页码

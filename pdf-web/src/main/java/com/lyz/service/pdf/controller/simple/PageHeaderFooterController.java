@@ -8,9 +8,12 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.WriterProperties;
 import com.itextpdf.layout.Document;
 import com.lyz.service.pdf.constant.PdfServiceConstant;
+import com.lyz.service.pdf.core.context.PdfContext;
+import com.lyz.service.pdf.core.event.PageFooterEvent;
 import com.lyz.service.pdf.core.event.PageHeaderEvent;
 import com.lyz.service.pdf.core.event.PageSizeEvent;
 import com.lyz.service.pdf.core.event.WaterMarkEvent;
+import com.lyz.service.pdf.core.handler.PageFooterEventHandler;
 import com.lyz.service.pdf.core.handler.PageHeaderEventHandler;
 import com.lyz.service.pdf.core.handler.PageSizeEventHandler;
 import com.lyz.service.pdf.core.handler.WaterMarkEventHandler;
@@ -45,11 +48,11 @@ import java.io.IOException;
 @Validated
 @RestController
 @RequestMapping("/pdf/simple/page")
-public class PageHeaderController {
+public class PageHeaderFooterController {
 
-    @ApiOperation("生成PDF文件--设置页眉")
-    @PostMapping("/header/create")
-    public Result<String> headerCreate(@ApiParam(name = "filename")
+    @ApiOperation("生成PDF文件--设置页眉页脚")
+    @PostMapping("/create")
+    public Result<String> pageCreate(@ApiParam(name = "filename")
                                  @Valid @NotBlank(message = "文件名不能为空")
                                  @RequestParam(value = "filename", defaultValue = "") String filename) throws IOException {
         File file = FileUtil.createTempFile(filename, ".pdf");
@@ -58,13 +61,10 @@ public class PageHeaderController {
         writerProperties.setFullCompressionMode(true);
         PdfDocument pdf = new PdfDocument(new PdfWriter(absolutePath, writerProperties));
         pdf.setDefaultPageSize(PageSize.A3);
+
         WaterMarkEvent waterMarkEvent = new WaterMarkEvent();
         waterMarkEvent.setWaterMark("杭州至秦科技有限公司");
         pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new WaterMarkEventHandler(waterMarkEvent));
-        PageSizeEvent pageSizeEvent = new PageSizeEvent();
-        pageSizeEvent.setPrefix("第");
-        pageSizeEvent.setSuffix("页");
-        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new PageSizeEventHandler(pageSizeEvent));
 
         PageHeaderEvent event = new PageHeaderEvent();
         event.setStartPageNumber(1);
@@ -74,8 +74,56 @@ public class PageHeaderController {
         event.setFlag("这个一个Flag");
         event.setLogoImage(PdfServiceConstant.ROOT_TEMPLATE_IMAGE + "logo/logo1.png");
         pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new PageHeaderEventHandler(event));
+
+        PageFooterEvent pageFooterEvent = new PageFooterEvent();
+        pageFooterEvent.setContext("这是一个页脚，是不是很棒！！！！！");
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new PageFooterEventHandler(pageFooterEvent));
+
+        PageSizeEvent pageSizeEvent = new PageSizeEvent();
+        pageSizeEvent.setPrefix("第");
+        pageSizeEvent.setSuffix("页");
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new PageSizeEventHandler(pageSizeEvent));
+
         Document document = new Document(pdf, pdf.getDefaultPageSize(), false);
         document.close();
+        PdfContext.remove();
+        return Result.success(absolutePath);
+    }
+
+
+    @ApiOperation("生成PDF文件--设置页眉")
+    @PostMapping("/header/create")
+    public Result<String> headerCreate(@ApiParam(name = "filename")
+                                       @Valid @NotBlank(message = "文件名不能为空")
+                                       @RequestParam(value = "filename", defaultValue = "") String filename) throws IOException {
+        File file = FileUtil.createTempFile(filename, ".pdf");
+        String absolutePath = file.getAbsolutePath();
+        WriterProperties writerProperties = new WriterProperties();
+        writerProperties.setFullCompressionMode(true);
+        PdfDocument pdf = new PdfDocument(new PdfWriter(absolutePath, writerProperties));
+        pdf.setDefaultPageSize(PageSize.A3);
+
+        WaterMarkEvent waterMarkEvent = new WaterMarkEvent();
+        waterMarkEvent.setWaterMark("杭州至秦科技有限公司");
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new WaterMarkEventHandler(waterMarkEvent));
+
+        PageHeaderEvent event = new PageHeaderEvent();
+        event.setStartPageNumber(1);
+        event.setContext("这是一个页眉测试Demo");
+        event.setBkImage(PdfServiceConstant.ROOT_TEMPLATE_IMAGE + "ph/ph1.png");
+        event.setTime(DateUtil.currentDate());
+        event.setFlag("这个一个Flag");
+        event.setLogoImage(PdfServiceConstant.ROOT_TEMPLATE_IMAGE + "logo/logo1.png");
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new PageHeaderEventHandler(event));
+
+        PageSizeEvent pageSizeEvent = new PageSizeEvent();
+        pageSizeEvent.setPrefix("第");
+        pageSizeEvent.setSuffix("页");
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE, new PageSizeEventHandler(pageSizeEvent));
+
+        Document document = new Document(pdf, pdf.getDefaultPageSize(), false);
+        document.close();
+        PdfContext.remove();
         return Result.success(absolutePath);
     }
 }
