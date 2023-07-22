@@ -156,17 +156,21 @@ public class Html2PdfServiceImpl implements Html2PdfService, ApplicationContextA
      * @param context 上下文
      */
     private void addAfterNewPage(PdfDocument pdfDocument, MyContext context) {
-        if (Objects.nonNull(context.getCoverEvent()) && StringUtils.isNotBlank(context.getCoverEvent().getCoverImage())) {
-            PdfContext.putCover(true);
-            pdfDocument.addNewPage(1);
-            PdfContext.putCover(false);
-        }
         pdfDocument.addNewPage();
         pdfDocument.addNewPage();
         PdfContext.putTotalPage(pdfDocument.getNumberOfPages());
         if (Objects.nonNull(context.getBackCoverEvent()) && StringUtils.isNotBlank(context.getBackCoverEvent().getBackCoverImage())) {
             pdfDocument.addNewPage();
         }
+        /**
+         * 注：封面事件要最后处理，不然会导致页码错乱，除非自己重新指定页码取值逻辑
+         */
+        if (Objects.nonNull(context.getCoverEvent()) && StringUtils.isNotBlank(context.getCoverEvent().getCoverImage())) {
+            PdfContext.putCover(true);
+            pdfDocument.addNewPage(1);
+            PdfContext.putCover(false);
+        }
+
     }
 
     /**
