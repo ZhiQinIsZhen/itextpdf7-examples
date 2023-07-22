@@ -1,9 +1,6 @@
 package com.lyz.service.pdf.core.context;
 
-import com.lyz.service.pdf.core.event.PageFooterEvent;
-import com.lyz.service.pdf.core.event.PageHeaderEvent;
-import com.lyz.service.pdf.core.event.PageSizeEvent;
-import com.lyz.service.pdf.core.event.WaterMarkEvent;
+import com.lyz.service.pdf.core.event.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.thymeleaf.context.AbstractContext;
@@ -32,11 +29,18 @@ public class MyContext extends AbstractContext {
     }
 
     /**
-     * 封面图片
+     * 封面事件
      */
     @Getter
     @Setter
-    private String coverImage;
+    private CoverEvent coverEvent;
+
+    /**
+     * 封尾事件
+     */
+    @Getter
+    @Setter
+    private BackCoverEvent backCoverEvent;
 
     /**
      * 页眉

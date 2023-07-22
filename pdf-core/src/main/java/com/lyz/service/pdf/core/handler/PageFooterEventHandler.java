@@ -45,7 +45,10 @@ public class PageFooterEventHandler implements IEventHandler {
         PdfDocumentEvent documentEvent = (PdfDocumentEvent) event;
         PdfDocument pdfDocument = documentEvent.getDocument();
         int pageNumber = pdfDocument.getNumberOfPages();
-        if (pageNumber < pageFooterEvent.getStartPageNumber()) {
+        if (PdfContext.getCover() || pageNumber < pageFooterEvent.getStartPageNumber()) {
+            return;
+        }
+        if (pageNumber > PdfContext.getTotalPage()) {
             return;
         }
         PdfPage page = documentEvent.getPage();

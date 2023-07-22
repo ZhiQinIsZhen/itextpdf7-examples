@@ -15,9 +15,11 @@ public enum PdfExceptionCodeEnum implements IExceptionService{
     DEEP_COPY_ERROR("10002", "对象深拷贝错误"),
     CREATE_PDF_FAIL("10003", "生成PDF文件失败"),
     CREATE_PDF_FONT_FAIL("10004", "生成PDF字体失败"),
-    PAGE_HEADER_FAIL("10005", "页眉配置失败"),
-    PAGE_FOOTER_FAIL("10006", "页脚配置失败"),
-    RESOURCE_FAIL("10007", "资源文件获取失败"),
+    RESOURCE_FAIL("10005", "资源文件获取失败"),
+    PAGE_HEADER_FAIL("10006", "页眉配置失败"),
+    PAGE_FOOTER_FAIL("10007", "页脚配置失败"),
+    COVER_FAIL("10008", "封面配置失败"),
+    BACK_COVER_FAIL("10009", "封底配置失败"),
     ;
 
     private final String code;

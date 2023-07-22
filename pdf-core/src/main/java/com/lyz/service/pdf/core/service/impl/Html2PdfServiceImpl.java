@@ -13,10 +13,7 @@ import com.itextpdf.layout.font.FontProvider;
 import com.lyz.service.pdf.constant.PdfServiceConstant;
 import com.lyz.service.pdf.core.context.MyContext;
 import com.lyz.service.pdf.core.context.PdfContext;
-import com.lyz.service.pdf.core.handler.PageFooterEventHandler;
-import com.lyz.service.pdf.core.handler.PageHeaderEventHandler;
-import com.lyz.service.pdf.core.handler.PageSizeEventHandler;
-import com.lyz.service.pdf.core.handler.WaterMarkEventHandler;
+import com.lyz.service.pdf.core.handler.*;
 import com.lyz.service.pdf.core.resource.MyResourceRetriever;
 import com.lyz.service.pdf.core.resource.MyTagWorkerFactory;
 import com.lyz.service.pdf.core.service.Html2PdfService;
@@ -24,6 +21,7 @@ import com.lyz.service.pdf.exception.PdfExceptionCodeEnum;
 import com.lyz.service.pdf.exception.PdfServiceException;
 import com.lyz.service.pdf.util.PdfFontUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -83,10 +81,15 @@ public class Html2PdfServiceImpl implements Html2PdfService, ApplicationContextA
             pdfDocument.setDefaultPageSize(PageSize.A3);
             //添加事件
             this.addEventHandler(pdfDocument, context);
+            //前置页面处理
+            this.addBeforeNewPage(pdfDocument, context);
             //创建转化配置
             ConverterProperties converterProperties = this.createConverter();
             converterProperties.setTagWorkerFactory(new MyTagWorkerFactory(pdfDocument));
             Document document = HtmlConverter.convertToDocument(html, pdfDocument, converterProperties);
+            document.flush();
+            //后置页面处理
+            this.addAfterNewPage(pdfDocument, context);
             document.close();
             pdfDocument.close();
         } catch (Exception e) {
@@ -137,12 +140,46 @@ public class Html2PdfServiceImpl implements Html2PdfService, ApplicationContextA
     }
 
     /**
+     * 前置页面处理
+     *
+     * @param pdfDocument pdf文档
+     * @param context 上下文
+     */
+    private void addBeforeNewPage(PdfDocument pdfDocument, MyContext context) {
+
+    }
+
+    /**
+     * 后置页面处理
+     *
+     * @param pdfDocument pdf文档
+     * @param context 上下文
+     */
+    private void addAfterNewPage(PdfDocument pdfDocument, MyContext context) {
+        if (Objects.nonNull(context.getCoverEvent()) && StringUtils.isNotBlank(context.getCoverEvent().getCoverImage())) {
+            PdfContext.putCover(true);
+            pdfDocument.addNewPage(1);
+            PdfContext.putCover(false);
+        }
+        pdfDocument.addNewPage();
+        pdfDocument.addNewPage();
+        PdfContext.putTotalPage(pdfDocument.getNumberOfPages());
+        if (Objects.nonNull(context.getBackCoverEvent()) && StringUtils.isNotBlank(context.getBackCoverEvent().getBackCoverImage())) {
+            pdfDocument.addNewPage();
+        }
+    }
+
+    /**
      * 添加事件
      *
      * @param pdfDocument pdf文档
      * @param context 上下文
      */
     private void addEventHandler(PdfDocument pdfDocument, MyContext context) {
+        //封面事件
+        pdfDocument.addEventHandler(PdfDocumentEvent.START_PAGE, new CoverEventHandler(context.getCoverEvent()));
+        //封尾事件
+        pdfDocument.addEventHandler(PdfDocumentEvent.START_PAGE, new BackCoverEventHandler(context.getBackCoverEvent()));
         //页眉事件
         pdfDocument.addEventHandler(PdfDocumentEvent.START_PAGE, new PageHeaderEventHandler(context.getPhEvent()));
         //页脚事件

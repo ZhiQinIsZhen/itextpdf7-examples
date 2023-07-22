@@ -46,6 +46,19 @@ public class PdfSwaggerConfig {
                 .groupName("简单PDF-API");
     }
 
+    @Bean
+    public Docket html2PdfApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
+                .protocols(Sets.newHashSet("https", "http"))
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.lyz.service.pdf.controller.html"))
+                .paths(PathSelectors.any())
+                .build()
+                .extensions(openApiExtensionResolver.buildSettingExtensions())
+                .groupName("html2PDF复杂版-API");
+    }
+
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("PDF接口文档")

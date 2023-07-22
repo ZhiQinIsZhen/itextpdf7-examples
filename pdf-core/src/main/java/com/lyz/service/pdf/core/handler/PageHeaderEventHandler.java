@@ -16,6 +16,7 @@ import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.properties.*;
+import com.lyz.service.pdf.core.context.PdfContext;
 import com.lyz.service.pdf.core.event.PageHeaderEvent;
 import com.lyz.service.pdf.core.resource.MyResourceRetriever;
 import com.lyz.service.pdf.exception.PdfExceptionCodeEnum;
@@ -52,7 +53,10 @@ public class PageHeaderEventHandler implements IEventHandler {
         PdfDocumentEvent documentEvent = (PdfDocumentEvent) event;
         PdfDocument pdfDocument = documentEvent.getDocument();
         int pageNumber = pdfDocument.getNumberOfPages();
-        if (pageNumber < pageHeaderEvent.getStartPageNumber()) {
+        if (PdfContext.getCover() || pageNumber < pageHeaderEvent.getStartPageNumber()) {
+            return;
+        }
+        if (pageNumber > PdfContext.getTotalPage()) {
             return;
         }
         PdfPage page = documentEvent.getPage();
@@ -108,7 +112,7 @@ public class PageHeaderEventHandler implements IEventHandler {
             if(pingFangFontHeavy.getWidth(pageHeaderEvent.getContext(), contextFont) > contextWidth){
                 contextFont = 12f;
             }
-            Div corp = new Div()
+            Div contextDiv = new Div()
                     .add(new Paragraph(pageHeaderEvent.getContext())
                             .setFontColor(DeviceRgb.WHITE).setMargin(0)
                             .setFontSize(contextFont)
@@ -118,7 +122,7 @@ public class PageHeaderEventHandler implements IEventHandler {
                     .setFixedPosition(StringUtils.isNotBlank(pageHeaderEvent.getLogoImage()) ? 205 : 165,
                             pageSize.getHeight()-(28.5f+17.25f),
                             contextWidth);
-            headerDiv.add(corp);
+            headerDiv.add(contextDiv);
             canvas.add(headerDiv);
         } catch (Exception e) {
             log.info("页眉事件失败", e);

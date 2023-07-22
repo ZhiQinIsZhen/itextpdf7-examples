@@ -1,6 +1,5 @@
 package com.lyz.service.pdf.core.handler;
 
-import cn.hutool.core.math.MathUtil;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.events.Event;
 import com.itextpdf.kernel.events.IEventHandler;
@@ -12,9 +11,7 @@ import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.layout.Canvas;
 import com.itextpdf.layout.element.Div;
 import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
-import com.itextpdf.layout.properties.VerticalAlignment;
 import com.lyz.service.pdf.core.context.PdfContext;
 import com.lyz.service.pdf.core.event.PageSizeEvent;
 import com.lyz.service.pdf.util.PdfFontUtil;
